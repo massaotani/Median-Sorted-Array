@@ -1,6 +1,8 @@
+
 import java.util.Scanner;
 
 class Main {
+
     public static void main(String[] args) {
         String nums1;
         String nums2;
@@ -28,19 +30,63 @@ class Main {
         System.arraycopy(aux, 0, newArr, 0, aux.length);
         System.arraycopy(_aux, 0, newArr, aux.length, _aux.length);
 
-        newArr = MergeSort(newArr);
+        MergeSort(newArr, newArr.length);
 
         return newArr;
     }
 
-    public static int[] MergeSort(int[] arr){
-        int[] res = new int[arr.length];
+    public static void MergeSort(int[] arr, int n) {
+        if (n < 2) {
+            return;
+        }
 
-        return res;
+        int mid = n / 2;
+        int[] firstArr = new int[mid];
+        int[] secondArr = new int[n - mid];
+
+        for (int i = 0; i < mid; i++) {
+            firstArr[i] = arr[i];
+        }
+
+        for (int i = mid; i < n; i++) {
+            secondArr[i - mid] = arr[i];
+        }
+
+        // Recursion
+        MergeSort(firstArr, mid);
+        MergeSort(secondArr, n - mid);
+
+        Merge(arr, firstArr, secondArr, mid, n - mid);
     }
 
-    public static double CalculateMedianValue(int[] arr){
-        double median = 0.0;
+    public static void Merge(int[] arr, int[] firstArr, int[] secondArr, int left, int right) {
+        int i = 0, j = 0, k = 0;
+
+        while (i < left && j < right) {
+            if (firstArr[i] <= secondArr[j]) {
+                arr[k++] = firstArr[i++];
+            } else {
+                arr[k++] = secondArr[j++];
+            }
+        }
+
+        while (i < left) {
+            arr[k++] = firstArr[i++];
+        }
+
+        while (j < right) {
+            arr[k++] = secondArr[j++];
+        }
+    }
+
+    public static double CalculateMedianValue(int[] arr) {
+        int aux = 0;
+
+        for(int i = 0; i < arr.length; i++){
+            aux += arr[i];
+        }
+        
+        double median = (double)aux/arr.length;
 
         return median;
     }
@@ -52,13 +98,7 @@ class Main {
         for (int i = 0; i < intArray.length; i++) {
             intArray[i] = Integer.parseInt(stringNumbers[i].trim());
         }
-        
-        return intArray;
-    }
 
-    public static void PrintArray(int[] arr){
-        for(int i = 0; i < arr.length; i++){
-            System.out.print(arr[i] + " ");
-        }
+        return intArray;
     }
 }
